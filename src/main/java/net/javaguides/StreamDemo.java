@@ -2,6 +2,7 @@ package net.javaguides;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StreamDemo {
@@ -49,7 +50,8 @@ public class StreamDemo {
         Stream<Integer> gnerate = Stream.generate(() -> 1);
         Stream.iterate(1, x -> x + 1);
 
-
+        List<Integer> collect = Stream.iterate(1, x -> x + 1).limit(100).collect(Collectors.toList());
+        System.out.println(collect);
 
     }
 }
