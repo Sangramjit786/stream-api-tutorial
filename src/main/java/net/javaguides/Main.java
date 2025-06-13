@@ -3,6 +3,7 @@ package net.javaguides;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -86,8 +87,26 @@ public class Main {
         BinaryOperator<Integer> b = (x, y) -> x + y;
         System.out.println(b.apply(6, 7));
 
+        // Method reference --> use method without invoking & in place of lambda expression
+        List<String> students = Arrays.asList("Ram", "Shyam", "Ghanshyam");
+        students.forEach(x -> System.out.println(x));
+        students.forEach(System.out::println);
+
+        // Constructor reference
+        List<String> names = Arrays.asList("A", "B", "C");
+        List<MobilePhone> mobilePhoneList = names.stream().map(MobilePhone::new).collect(Collectors.toList());
+        mobilePhoneList.forEach(System.out::println);
     }
 }
+
+class MobilePhone {
+    String name;
+
+    public MobilePhone(String name) {
+        this.name = name;
+    }
+}
+
 
 /*class Sumoperation implements MathOperation {
 
