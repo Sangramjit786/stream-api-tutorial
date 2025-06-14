@@ -1,4 +1,4 @@
-package net.javaguides;
+package net.javaguides.stream;
 
 import java.util.Arrays;
 import java.util.List;
