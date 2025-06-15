@@ -35,9 +35,39 @@ public class IntermediateOps {
         // 5.limit
         System.out.println(Stream.iterate(1, x -> x + 1).limit(100).count());
 
-        //6. skip
+        // 6. skip
         System.out.println(Stream.iterate(1, x -> x + 1).skip(10).limit(100).count());
         /* Starting from 11, to 100 elements it will contain. And first 1 to 10 elements will be skiped */
+
+        // 7. peek
+        Stream.iterate(1, x -> x + 1).skip(10).limit(100).peek(System.out::println).count();
+
+        // 8. flatMap
+        /*
+        Handle streams of collections, lists or arrays where each element is itself a collection
+        Flatten nested structures (e.g., lists within lists) so that they can be processed as a single sequence of elements
+        Transform and flatten elements at the same time.
+         */
+        List<List<String>> listOfLists = Arrays.asList(
+                Arrays.asList("apple", "banana"),
+                Arrays.asList("orange", "kiwi"),
+                Arrays.asList("pear", "grape")
+        );
+
+        System.out.println(listOfLists.get(1).get(1));
+        System.out.println(listOfLists.stream().flatMap(x -> x.stream()).map(String::toUpperCase).toList());
+
+        List<String> sentences = Arrays.asList(
+                "Hello world",
+                "Java streams are powerful",
+                "flatMap is useful"
+        );
+
+        System.out.println(sentences
+                .stream()
+                .flatMap(sentence -> Arrays.stream(sentence.split(" ")))
+                .map(String::toUpperCase)
+                .toList());
 
 
     }
