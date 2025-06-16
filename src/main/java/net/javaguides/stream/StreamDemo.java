@@ -7,12 +7,12 @@ import java.util.stream.Stream;
 
 public class StreamDemo {
     public static void main(String[] args) {
-        // feature intoduced in java 8
-        // process collection of data in a fuctional and declarative manner
+        // feature introduced in java 8
+        // process collection of data in a functional and declarative manner
         // Simplify Data Processing
         // Embrace Functional Programming
         // Improve Readability and Maintainability
-        // Enable Easy Paralleism
+        // Enable Easy Parallelism
 
         // What is stream?
         // a sequence of elements supporting functional and declarative programming
