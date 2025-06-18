@@ -8,6 +8,17 @@ public class Employee {
     String email;
     String departmentName;
     Integer salary;
+    char gender;
+
+    public Employee(Integer id, String firstName, String lastName, String email, String departmentName, Integer salary, char gender) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.departmentName = departmentName;
+        this.salary = salary;
+        this.gender = gender;
+    }
 
     public Employee(Integer id, String firstName, String lastName, String email, String departmentName, Integer salary) {
         this.id = id;
@@ -64,5 +75,13 @@ public class Employee {
 
     public void setSalary(Integer salary) {
         this.salary = salary;
+    }
+
+    public char getGender() {
+        return gender;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
     }
 }
