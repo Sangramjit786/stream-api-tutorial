@@ -1,8 +1,11 @@
 package net.javaguides.stream;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class StreamPracticeDemo {
@@ -141,7 +144,7 @@ public class StreamPracticeDemo {
         /*
          12. Given a list of integers, use Stream API to find all elements that appear more than once.
         */
-        List<Integer> listNumbers = Arrays.asList(9, 1, 2, 2, 3, 5, 3, 5, 6, 7, 7, 8);
+        List<Integer> listNumbers = Arrays.asList(9, 9, 1, 2, 2, 3, 5, 3, 5, 6, 7, 7, 8);
         System.out.println(listNumbers
                 .stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
@@ -253,7 +256,7 @@ public class StreamPracticeDemo {
 
         /*
 
-        Multi-Level Grouping:
+         18 .Multi-Level Grouping:
             Given a list of Employee objects, perform a multi-level grouping:
                 1) First group by departmentName
                 2) Then group by gender
@@ -275,5 +278,308 @@ public class StreamPracticeDemo {
                         Collectors.groupingBy(Employee::getGender,          // 2nd level group by gender
                                 Collectors.averagingDouble(Employee::getSalary)))));    // compute average salary
 
+        /*
+         19. Sliding Window Maximum Using Streams
+                Problem:
+                    Given a list of integers and a window size k, find the maximum of each sliding window using Java Streams.
+        */
+
+        List<Integer> numberList = Arrays.asList(1, 3, -1, -3, 5, 3, 6, 7);
+        int k = 3;
+
+        System.out.println(IntStream.rangeClosed(0, numberList.size() - k)
+                .mapToObj(i -> numberList.subList(i, i + k))                  // create sublist for each window
+                .map(window -> Collections.max(window))              //  get max from each window
+                .collect(Collectors.toList()));
+
+
+        /*
+         20. Stream-Based Joins Between Two Lists
+                Problem:
+                    Given two lists — one of Employee objects and one of Department objects — join them using departmentId
+                    (like SQL inner join) using Stream API.
+        */
+        List<Employee> employees1 = Arrays.asList(
+                new Employee(1, "Riya", "HR", 101),
+                new Employee(2, "Amit", "IT", 102),
+                new Employee(3, "Jay", "Finance", 103)
+        );
+
+        List<Department> departments1 = Arrays.asList(
+                new Department(101, "HR"),
+                new Department(102, "IT"),
+                new Department(103, "Finance")
+        );
+
+        List<EmployeeDepartmentDTO> joined = employees1.stream()
+                .flatMap(emp -> departments1.stream()
+                        .filter(dept -> dept.getId() == emp.getDepartmentId())
+                        .map(dept -> new EmployeeDepartmentDTO(emp.getFirstName(), dept.getName()))
+                )
+                .collect(Collectors.toList());
+
+        System.out.println(joined);
+
+        /*
+         21. Group Employees by Joining Date’s Year and Then by Department
+                Problem:
+                    Given a list of employees with joining dates, group them by year of joining and within each year, by department
+                    name.
+        */
+
+        List<Employee> empLists = Arrays.asList(
+                new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000, 'M', LocalDate.of(2023, 2, 22)),
+                new Employee(3, "Amit", "Das", "amit@gamil.com", "IT", 30000, 'M', LocalDate.of(2025, 3, 20)),
+                new Employee(2, "Rina", "Singh", "rina@gamil.com", "HR", 25000,'F', LocalDate.of(2025, 2, 10)),
+                new Employee(4, "Jay", "Das", "jay@gamil.com", "Finance", 55000,'M', LocalDate.of(2024, 1, 19)),
+                new Employee(8, "Surojit", "Mondal", "surojit@gamil.com", "Finance", 50000, 'M', LocalDate.of(2023, 4, 22)),
+                new Employee(9, "Puja", "Mukherjee", "puja@gamil.com", "Finance", 52000, 'F', LocalDate.of(2022, 3, 25))
+        );
+
+        System.out.println(empLists.stream().collect(Collectors.groupingBy(x -> x.getDate().getYear(), Collectors.groupingBy(x -> x.getDepartmentName()))));
+
+        /*
+         22. Custom Collector to Partition and Sort
+                    Problem:
+                        Given a list of numbers, partition them into even and odd, then return each list sorted in descending order.
+        */
+
+        Map<Boolean, List<Integer>> partitionedSorted = numsList.stream()
+                .collect(Collectors.partitioningBy(
+                        n -> n % 2 == 0, // Partition by even (true) or odd (false)
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                eachList -> eachList.stream()
+                                        .sorted(Comparator.reverseOrder())
+                                        .collect(Collectors.toList())
+                        )
+                ));
+
+        System.out.println("Even (Sorted Desc): " + partitionedSorted.get(true));
+        System.out.println("Odd  (Sorted Desc): " + partitionedSorted.get(false));
+
+        /*
+         23. Calculate Weighted Average by Category
+                Problem:
+                    Given a list of Transaction objects (with category, amount, and weight), calculate the weighted average amount
+                    per category.
+        */
+
+        List<Transaction> transactions = Arrays.asList(
+                new Transaction("Food", 100, 0.5),
+                new Transaction("Food", 200, 1.0),
+                new Transaction("Travel", 300, 0.3),
+                new Transaction("Travel", 400, 0.7),
+                new Transaction("Entertainment", 150, 1.0)
+        );
+
+        Map<String, Double> weightedAvgByCategory = transactions.stream()
+                .collect(Collectors.groupingBy(
+                        Transaction::getCategory,
+                        Collector.of(
+                                () -> new double[2], // [0] = weighted sum, [1] = total weight
+                                (a, t) -> {
+                                    a[0] += t.getAmount() * t.getWeight();
+                                    a[1] += t.getWeight();
+                                },
+                                (a, b) -> {
+                                    a[0] += b[0];
+                                    a[1] += b[1];
+                                    return a;
+                                },
+                                a -> a[1] == 0 ? 0.0 : a[0] / a[1]
+                        )
+                ));
+
+
+        weightedAvgByCategory.forEach((category, avg) ->
+                System.out.println("Category: " + category + ", Weighted Average: " + avg));
+
+        /*
+         24. remove all vowels from a given string
+        */
+
+        String inputStr = "Rohit";
+
+        System.out.println(inputStr.chars().mapToObj(c -> (char)c)
+                .filter(c -> !"aeiouAEIOU".contains(c.toString()))
+                .map(c -> String.valueOf(c))
+                .collect(Collectors.joining()));
+
+        /*
+         25. Conver a list of string to uppercase
+        */
+
+        System.out.println(vhicelList.stream().map(c -> c.toUpperCase()).collect(Collectors.toList()));
+
+        /*
+         26. Count of frequency of words in a list
+        */
+
+        List<String> langList = Arrays.asList("Java", "C", "C++", "Python", "Java", "C++", "Java", "Python");
+        // First Way
+        System.out.println(langList.stream().collect(Collectors.toMap(a -> a, v -> 1, (x, y) -> (x + y))));
+        // Second Way
+        System.out.println(langList.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
+
+        /*
+         27. Count of frequency of words in a String
+        */
+
+        String words = "Java C C++ Python Java C++ Java Python";
+
+        System.out.println(Arrays.stream(words.split(" ")).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
+
+        /*
+         28. Count of occurrence of each character in a String
+        */
+        System.out.println(words.chars().mapToObj(c -> (char)c).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
+
+        /*
+         29. Length of each word in a string
+        */
+
+        System.out.println(Arrays.stream(words.split(" ")).distinct().collect(Collectors.toMap(Function.identity(), String::length)));
+
+        /*
+         30. Find First Repeated Character in a String Using Streams. Write a Stream-based solution to find the first
+             non-repeated character in a given string (case-sensitive, including spaces).
+        */
+
+        System.out.println(listNumbers
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() > 1)
+                .map(Map.Entry::getKey )
+                .findFirst().get());
+
+        /*
+         31. Write a program to find second-largest element
+        */
+
+        int[] numArray = {3, 2, 3, 4, 5, 1, 7, 6};
+
+        System.out.println(Arrays
+                .stream(numArray).boxed()
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .skip(1)
+                .findFirst().get());
+
+        /*
+         32. Longest String in an Array of String
+        */
+
+        System.out.println(Arrays.stream(words.split(" ")).sorted(Comparator.comparingInt(String::length).reversed()).collect(Collectors.toList()).getFirst());
+
+        /*
+         33. Find total number of count of a particular word
+        */
+        List<String> sentenceList = Arrays.asList("java python java html", "java java css html", "hadoop spark java");
+
+        // First Solution
+        System.out.println(sentenceList
+                .stream()
+                .flatMap(s -> Arrays.stream(s.split(" ")))
+                .collect(Collectors.toMap(a -> a, v -> 1, (x, y) -> (x + y)))
+                .get("java"));
+
+        // Second Solution
+        System.out.println(sentenceList
+                .stream()
+                .flatMap(s -> Arrays.stream(s.split(" ")))
+                .filter(word1 -> word1.equalsIgnoreCase("java"))
+                .count());
+
+        /*
+        34. Convert upper to lower and lower to upper in a given string
+        */
+
+        String toggleStr = "SwIsS123@";
+
+        System.out.println(toggleStr.chars()
+                .mapToObj(c -> {
+                    if (Character.isUpperCase(c)) {
+                        return Character.toLowerCase((char) c);
+                    } else if (Character.isLowerCase(c)) {
+                        return Character.toUpperCase((char) c);
+                    } else {
+                        return (char) c; // leave digits and symbols unchanged
+                    }
+                })
+                .map(String::valueOf)
+                .collect(Collectors.joining()));
+
+
+
+        /*
+         35. How would you group a list of employees first by department, then by designation, and compute the total salary for each
+         subgroup using Stream API?
+        */
+
+        List<Employee> employeeLists = Arrays.asList(
+                new Employee(1, "Rohit", "IT", 35000, "C1"),
+                new Employee(3, "Amit", "IT", 30000, "C2"),
+                new Employee(2, "Rina", "HR", 25000,"Y"),
+                new Employee(4, "Jay", "Finance", 55000,"C2"),
+                new Employee(8, "Surojit", "Finance", 50000, "C2"),
+                new Employee(9, "Puja", "Finance", 52000, "C1")
+        );
+
+        System.out.println(employeeLists
+                .stream()
+                .collect(Collectors.groupingBy(Employee::getDepartmentName,
+                        Collectors.groupingBy(Employee::getDesignation, Collectors.summingInt(Employee::getSalary)))));
+
+        /*
+         36. Using Java Streams, how do you find the second-highest unique number from a list of integers?
+        */
+
+        System.out.println(listNumbers.stream().sorted(Comparator.reverseOrder()).distinct().skip(1).findFirst().get());
+
+        /*
+         37. How can you implement a custom collector that concatenates a stream of strings into a single comma-separated
+             uppercase string?
+        */
+
+        System.out.println(vhicelList.stream().map(String::toUpperCase).collect(Collectors.joining(",")));
+
+        /*
+         38. What potential issues can arise when using peek() inside a parallel stream, especially when performing logging
+             or debugging operations?
+        */
+
+        /*
+            Problem Explanation:
+                Using .peek() inside a parallel stream for side effects like logging or debugging can cause unexpected, incorrect,
+                or jumbled output due to the non-deterministic and concurrent execution of stream elements.
+        */
+        List<String> characters = Arrays.asList("A", "B", "C", "D");
+
+        characters.parallelStream()
+                .peek(name -> System.out.println(Thread.currentThread().getName() + " - " + name))
+                .forEach(System.out::println);
+
+        /*
+         39. Given a list of orders where each order contains multiple line items, how would you extract a flattened list of
+             unique product names using Stream API?
+        */
+
+        List<Order> orderList = Arrays.asList(
+                new Order(1, Arrays.asList(new LineItem("SUZUKI"), new LineItem("TATA"), new LineItem("AUDI"))),
+                new Order(2, Arrays.asList(new LineItem("TOMATO"), new LineItem("POTATO"), new LineItem("SUGAR"))),
+                new Order(3, Arrays.asList(new LineItem("CAULIFLOWER"), new LineItem("ONION"), new LineItem("SUGAR")))
+        );
+
+        System.out.println(orderList.stream()
+                .flatMap(x -> x.getLineItems().stream())
+                .map(x -> x.getProductName())
+                .distinct()
+                .collect(Collectors.toList()));
     }
+
+
+
 }

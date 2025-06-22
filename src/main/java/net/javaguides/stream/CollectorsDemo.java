@@ -66,7 +66,7 @@ public class CollectorsDemo {
 
         // 10. Mapping and Collecting
         // Applies a mapping function before collecting
-        System.out.println(words.stream().collect(Collectors.mapping(x -> x.toUpperCase(), Collectors.toList())));
+        System.out.println("Mapping and Collecting Example: " + words.stream().collect(Collectors.mapping(x -> x.toUpperCase(), Collectors.toList())));
 
         // Example 1: Collecting names by Length
         List<String> l1 = Arrays.asList("Anna", "Bob", "Alexander", "Brian", "Alice");

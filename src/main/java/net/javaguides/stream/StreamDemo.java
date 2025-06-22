@@ -42,8 +42,12 @@ public class StreamDemo {
         List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
         Stream<Integer> stream = list.stream();
         // 2. From Arrays
+        // For String
         String[] array = {"a", "b", "c"};
         Stream<String> stream1 = Arrays.stream(array);
+        // For Integer
+        int[] numArray = {1, 3, 5, 2};
+        Stream<Integer> stream3 = Arrays.stream(numArray).boxed();
         // 3. Using Stream.of()
         Stream<String> stream2 = Stream.of("a", "b");
         // 4. Infinite streams(we use limit(), for finite size)
