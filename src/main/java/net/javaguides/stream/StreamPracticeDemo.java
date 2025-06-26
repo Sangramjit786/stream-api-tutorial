@@ -2,6 +2,7 @@ package net.javaguides.stream;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -76,7 +77,7 @@ public class StreamPracticeDemo {
         System.out.println(names.stream().collect(Collectors.joining(", ")));
 
         /*
-         7. Using Stream API, how would you find the second highest number in a list of integers?
+         7. Using Stream API, how would you find the second-highest number in a list of integers?
          */
 
         List<Integer> numbers = Arrays.asList(1, 5, 6, 2, 4);
@@ -416,7 +417,7 @@ public class StreamPracticeDemo {
          26. Count of frequency of words in a list
         */
 
-        List<String> langList = Arrays.asList("Java", "C", "C++", "Python", "Java", "C++", "Java", "Python");
+        List<String> langList = Arrays.asList("Java", "C", "C++", "Python", "Java", "C++", "java", "python");
         // First Way
         System.out.println(langList.stream().collect(Collectors.toMap(a -> a, v -> 1, (x, y) -> (x + y))));
         // Second Way
@@ -515,7 +516,7 @@ public class StreamPracticeDemo {
 
 
         /*
-         35. How would you group a list of employees first by department, then by designation, and compute the total salary for each
+         35. How would you group a list of employees first by department, then by designation, and compute the total salary and also average solution for each
          subgroup using Stream API?
         */
 
@@ -532,6 +533,15 @@ public class StreamPracticeDemo {
                 .stream()
                 .collect(Collectors.groupingBy(Employee::getDepartmentName,
                         Collectors.groupingBy(Employee::getDesignation, Collectors.summingInt(Employee::getSalary)))));
+
+        System.out.println(employeeLists
+                .stream()
+                .collect(Collectors
+                        .groupingBy(Employee::getDepartmentName,
+                                Collectors
+                                        .groupingBy(Employee::getDesignation,
+                                                Collectors
+                                                        .averagingDouble(Employee::getSalary)))));
 
         /*
          36. Using Java Streams, how do you find the second-highest unique number from a list of integers?
@@ -570,7 +580,10 @@ public class StreamPracticeDemo {
         List<Order> orderList = Arrays.asList(
                 new Order(1, Arrays.asList(new LineItem("SUZUKI"), new LineItem("TATA"), new LineItem("AUDI"))),
                 new Order(2, Arrays.asList(new LineItem("TOMATO"), new LineItem("POTATO"), new LineItem("SUGAR"))),
-                new Order(3, Arrays.asList(new LineItem("CAULIFLOWER"), new LineItem("ONION"), new LineItem("SUGAR")))
+                new Order(3, Arrays.asList(new LineItem("CAULIFLOWER"), new LineItem("ONION"), new LineItem("SUGAR"))),
+                new Order(3, Arrays.asList(new LineItem("Protine"), new LineItem("Amino Acid"), new LineItem("Lysine"))),
+                new Order(3, Arrays.asList(new LineItem("Progress "), new LineItem("Process"), new LineItem("Proceed"))),
+                new Order(3, Arrays.asList(new LineItem("Proactive "), new LineItem("Professional"), new LineItem("Proceed")))
         );
 
         System.out.println(orderList.stream()
@@ -578,6 +591,245 @@ public class StreamPracticeDemo {
                 .map(x -> x.getProductName())
                 .distinct()
                 .collect(Collectors.toList()));
+
+
+        /*
+         40. Given a List<Product> with fields name, category, and price, find the top 3 most expensive products in each category
+             using the Stream API.
+        */
+
+        List<Product> products = Arrays.asList(
+                new Product("Tomato", "vegetable", 45.0),
+                new Product("Potato", "vegetable", 30.0),
+                new Product("Nails", "hardware", 50.0),
+                new Product("Toy Bike", "toy", 60.0),
+                new Product("Pipe", "hardware", 180.0),
+                new Product("Teddy Bear", "toy", 400.0),
+                new Product("Onion", "vegetable", 49.0),
+                new Product("Garlic", "vegetable", 54.0),
+                new Product("Maruti", "vhicle", 600000.0)
+        );
+
+        Map<String, List<Product>> top3ByCategory = products
+                .stream()
+                .collect(Collectors.groupingBy(
+                        Product::getCategory,
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                prodList -> prodList
+                                        .stream()
+                                        .sorted(Comparator.comparingDouble(Product::getPrice).reversed())
+                                        .limit(3)
+                                        .collect(Collectors.toList())
+                        )));
+
+        top3ByCategory.forEach((category, topProducts) -> {
+            System.out.println("\nCategory: " + category);
+            topProducts.forEach(x -> System.out.println("Product Name: " + x.getName() + ", Price: " + x.getPrice()));
+        });
+
+
+        /*
+          When we will use : 'collectingAndThen()' =>
+
+            1) When you want to transform the collected result further.
+            2) In grouping scenarios (e.g., top N elements in a group).
+        */
+
+        /*
+         41 . How would you implement a custom collector using Collector.of() that concatenates a stream of strings into a
+              single comma-separated string, converting each to uppercase?
+        */
+
+        Stream<String> nameslist = Stream.of("rohit", "amit", "rina");
+
+        String res = nameslist.collect(Collector.of(
+                StringBuilder::new,                         // Supplier: creates new mutable container
+                (sb, str1) -> sb.append(str1.toUpperCase()).append(","), // Accumulator
+                StringBuilder::append,                      // Combiner: used in parallel streams
+                sb -> sb.length() > 0                       // Finisher: remove trailing comma
+                        ? sb.substring(0, sb.length() - 1)
+                        : ""
+        ));
+
+        System.out.println(res);  // Output: ROHIT,AMIT,RINA
+
+
+        /*
+         42. Given a List<Order>, where each Order contains a List<LineItem>, write a Stream API solution to extract a list of
+             all unique product names that contain the word "Pro".
+        */
+
+        System.out.println(orderList
+                .stream()
+                .flatMap(x -> x.getLineItems().stream())
+                .map(x -> x.getProductName())
+                .filter(productName -> productName.contains("Pro"))
+                .distinct()
+                .collect(Collectors.toList()));
+
+        /*
+         43. Given a list of strings, use the Stream API to build a Map<String, Long> that counts the frequency of each word,
+             case-insensitively.
+        */
+
+        System.out.println(langList
+                .stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
+
+        /*
+         44. Given a List<Order> where each Order has a List<LineItem>, flatten all line items and group them by product category,
+             summing the total price for each category.
+        */
+
+        List<Order> orderLists = Arrays.asList(
+                new Order(1, Arrays.asList(new LineItem("SUZUKI", "Car", 680000.0), new LineItem("TATA", "Car", 1080000.0), new LineItem("AUDI", "Car", 1580000.0))),
+                new Order(2, Arrays.asList(new LineItem("TOMATO", "Vegetable", 40.0), new LineItem("POTATO", "Vegetable", 20.0), new LineItem("SUGAR", "Groceries", 40.0))),
+                new Order(3, Arrays.asList(new LineItem("CAULIFLOWER", "Vegetable", 20.0), new LineItem("ONION", "Vegetable", 43.0), new LineItem("SUGAR", "Groceries", 40.0))),
+                new Order(3, Arrays.asList(new LineItem("Protine", "biomolecules", 2000.0), new LineItem("Amino Acid", "biomolecules", 2300.0), new LineItem("Lysine", "biomolecules", 1500.0))),
+                new Order(3, Arrays.asList(new LineItem("Progress ", "Improvement", 0.0), new LineItem("Process", "Improvement", 0.0), new LineItem("Proceed", "Improvement", 0.0))),
+                new Order(3, Arrays.asList(new LineItem("Proactive ", "Improvement", 0.0), new LineItem("Professional", "Improvement", 0.0), new LineItem("Proceed", "Improvement", 0.0)))
+        );
+
+        System.out.println(orderLists.stream()
+                .flatMap(x -> x.getLineItems().stream())
+                .collect(Collectors.groupingBy(x -> x.getCategory(), Collectors.averagingDouble(x -> x.getPrice()))));
+
+
+        /*
+         45. Using Stream API, implement a transformation that assigns a unique incremental ID (e.g., starting from 1000)
+             to each element of a stream of Customer objects.
+        */
+
+        List<Customer> customers = Arrays.asList(
+                new Customer("Rohit"),
+                new Customer("Puja"),
+                new Customer("Jay"),
+                new Customer("Amit")
+        );
+
+        AtomicInteger counter = new AtomicInteger(1000);
+
+        List<IdentifiedCustomer> ans = customers.stream()
+                .map(c -> new IdentifiedCustomer(counter.getAndIncrement(), c.getName()))
+                .collect(Collectors.toList());
+
+        ans.forEach(System.out::println);
+
+        /*
+         46. You're given a large List<Transaction> and asked to compute the top 5 customers by transaction volume using parallel
+             streams. What pitfalls should you avoid, and how would you implement it efficiently.
+        */
+    
+        List<Transaction> trans = List.of(
+                new Transaction("C1", 5000),
+                new Transaction("C2", 8000),
+                new Transaction("C1", 4000),
+                new Transaction("C3", 10000),
+                new Transaction("C2", 2000),
+                new Transaction("C4", 9000),
+                new Transaction("C5", 3000),
+                new Transaction("C6", 15000),
+                new Transaction("C7", 4000)
+        );
+
+        Map<String, Double> totalByCustomer = trans
+                .parallelStream()
+                .collect(Collectors.groupingByConcurrent(
+                        Transaction::getCustomerId,
+                        Collectors.summingDouble(Transaction::getAmount)
+                ));
+
+        List<Map.Entry<String, Double>> top3 = totalByCustomer.entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .limit(3)
+                .collect(Collectors.toList());
+
+        top3.forEach(e ->
+                System.out.println("Customer: " + e.getKey() + ", Total Volume: " + e.getValue())
+        );
+
+        /*
+            Tips to Ensure Thread-Safety & Performance:
+
+                Always use groupingByConcurrent with parallel streams for aggregation.
+                Avoid shared mutable state (e.g., don't use a shared HashMap manually).
+                Do sorting and limiting in a final sequential stream, not inside parallel blocks.
+        */
+
+        /*
+         47. Given a list of Strings, group them by their first character and count the number of elements in each group.
+        */
+
+        List<String> wordLists = List.of("apple", "apricot", "banana", "blueberry", "cherry");
+
+        System.out.println(wordLists
+                .stream()
+                .collect(Collectors.groupingBy(x -> x.charAt(0), Collectors.counting())));
+
+        /*
+         48. Given a list of integers, return a map of elements that appear more than once along with their counts.
+        */
+
+        List<Integer> nos = List.of(1, 2, 3, 2, 3, 4, 5, 3);
+
+        System.out.println(nos.stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream()
+                .filter(entry -> entry.getValue() > 1)
+                .collect(Collectors.toList()));
+
+        /*
+         49. Given a List<List<String>>, flatten it and return all unique lowercase words sorted alphabetically.
+        */
+
+        List<List<String>> nested = List.of(
+                List.of("Hello", "world"),
+                List.of("HELLO", "java"),
+                List.of("Streams", "JAVA")
+        );
+
+        System.out.println(nested
+                .stream()
+                .flatMap(x -> x.stream())
+                .distinct()
+                .sorted()
+                .filter(x -> x.chars().noneMatch(Character::isUpperCase))
+                .collect(Collectors.toList()));
+
+        /*
+         50. Given a list of Employee objects, return a list of employee names who:
+                belong to the "Engineering" department
+                have a salary > 80,000
+                and sort them by salary descending.
+        */
+
+        List<Employee> emplist = Arrays.asList(
+                new Employee("Rohit", "IT", 35000),
+                new Employee("Amit", "IT", 90000),
+                new Employee("Rina", "HR", 25000),
+                new Employee("Jay", "Finance", 55000),
+                new Employee("Surojit", "Finance", 50000),
+                new Employee("Puja", "Finance", 52000)
+        );
+
+        System.out.println(emplist.stream().filter(e -> e.getDepartmentName().equals("IT"))
+                .filter(e -> e.getSalary() > 80000)
+                .sorted(Comparator.comparing(Employee::getSalary).reversed())
+                .map(Employee::getFirstName).collect(Collectors.toList()));
+
+        /*
+         51. Given a list of words, group them by their first character and find the longest word for each group.
+        */
+
+        List<String> wordslist = List.of("apple", "apricot", "banana", "blueberry", "cherry", "cranberry", "avocado");
+
+        System.out.println(wordslist
+                .stream()
+                .collect(Collectors.groupingBy(x -> x.charAt(0), Collectors.maxBy(Comparator.comparingInt(String::length)))));
+
     }
 
 

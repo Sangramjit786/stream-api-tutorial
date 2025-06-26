@@ -1,14 +1,28 @@
 package net.javaguides.stream;
 
 public class Transaction {
+    private String customerId;
     private String category;
     private double amount;
     private double weight;
+
+    public Transaction(String customerId, double amount) {
+        this.customerId = customerId;
+        this.amount = amount;
+    }
 
     public Transaction(String category, double amount, double weight) {
         this.category = category;
         this.amount = amount;
         this.weight = weight;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public String getCategory() {
