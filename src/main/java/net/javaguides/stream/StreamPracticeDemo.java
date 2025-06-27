@@ -830,8 +830,82 @@ public class StreamPracticeDemo {
                 .stream()
                 .collect(Collectors.groupingBy(x -> x.charAt(0), Collectors.maxBy(Comparator.comparingInt(String::length)))));
 
+        /*
+         52. Given a list of Transaction objects, group them by customerId and compute the average transaction amount for each customer.
+        */
+
+        System.out.println(trans.stream()
+                .collect(Collectors.groupingBy(x -> x.getCustomerId(),
+                        Collectors.averagingDouble(x -> x.getAmount()))));
+
+        /*
+         53. Given a list of strings, return a new list where each string is uppercased and sorted by length descending,
+             preserving order only if stream is sequential.
+        */
+
+        List<String> fruits = List.of("apple", "banana", "kiwi", "strawberry", "fig");
+        System.out.println(fruits.stream()
+                .map(String::toUpperCase)
+                .sorted(Comparator.comparingInt(String::length).reversed())
+                .collect(Collectors.toList()));
+
+        /*
+         54. Given a list of words, group them into lists of anagrams.
+        */
+        List<String> input = List.of("listen", "silent", "enlist", "google", "gooegl", "cat", "act");
+
+        Collection<List<String>> groupedAnagrams = input.stream()
+                .collect(Collectors.groupingBy(
+                        eachWord -> sortCharacters(eachWord), // key: sorted letters
+                        LinkedHashMap::new,            // preserves insertion order
+                        Collectors.toList()            // collect anagrams
+                ))
+                .values(); // extract only the list groups
+
+        // Print output
+        groupedAnagrams.forEach(System.out::println);
+
+        /*
+         55. Given a list of integers with possible duplicates, find the 3rd highest distinct number.
+        */
+
+        System.out.println(numsList.stream().distinct().sorted(Comparator.reverseOrder()).skip(2).findFirst().get());
+
+        /*
+         56. Given a list of Transaction objects with a LocalDate field, group them by month and return the total transaction
+             amount per month.
+        */
+
+        List<Transaction> transDateList = List.of(
+                new Transaction(5000, LocalDate.of(2023, 2, 22)),
+                new Transaction(8000, LocalDate.of(2025, 3, 20)),
+                new Transaction(4000, LocalDate.of(2025, 2, 10)),
+                new Transaction(10000, LocalDate.of(2024, 1, 19)),
+                new Transaction(2000, LocalDate.of(2023, 4, 22)),
+                new Transaction(9000, LocalDate.of(2022, 3, 25)),
+                new Transaction(3000, LocalDate.of(2023, 2, 22)),
+                new Transaction(15000, LocalDate.of(2025, 3, 20)),
+                new Transaction(4000, LocalDate.of(2025, 2, 10))
+        );
+
+        System.out.println(transDateList
+                .stream()
+                .collect(Collectors.groupingBy(
+            x -> x.getDate().getMonth(),
+                        Collectors.summingDouble(Transaction::getAmount))));
+
     }
 
-
+        /**
+         * Given a string, return a new string with characters sorted in ascending order.
+         *
+         * @param word the string to be sorted
+         * @return a new string with sorted characters
+         */
+    private static String sortCharacters(String word) {
+        char[] chars = word.toCharArray();
+        Arrays.sort(chars);
+        return new String(chars);
+    }
 
 }

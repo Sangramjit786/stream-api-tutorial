@@ -1,10 +1,18 @@
 package net.javaguides.stream;
 
+import java.time.LocalDate;
+
 public class Transaction {
     private String customerId;
     private String category;
     private double amount;
     private double weight;
+    private LocalDate date;
+
+    public Transaction(double amount, LocalDate date) {
+        this.amount = amount;
+        this.date = date;
+    }
 
     public Transaction(String customerId, double amount) {
         this.customerId = customerId;
@@ -15,6 +23,14 @@ public class Transaction {
         this.category = category;
         this.amount = amount;
         this.weight = weight;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public String getCustomerId() {
