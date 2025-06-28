@@ -894,6 +894,68 @@ public class StreamPracticeDemo {
             x -> x.getDate().getMonth(),
                         Collectors.summingDouble(Transaction::getAmount))));
 
+
+        /*
+         57. Write a method that takes a String and returns the character with the highest frequency using the Stream API.
+        */
+
+        String letters = "functionalprogramming";
+
+        System.out.println(letters.chars().mapToObj(x -> (char)x)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Comparator.comparingInt(entry -> Math.toIntExact(entry.getValue())))
+                .get()
+                .getKey());
+
+        /*
+         58. Given a list of integers, use streams to partition them into prime and non-prime numbers.
+        */
+
+        List<Integer> numberlists = List.of(2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        System.out.println(numberlists.stream().collect(Collectors.partitioningBy(x -> isPrime(x))));
+
+        /*
+         59. You have a list of objects, each containing a list of integers. Flatten all integers into a single sorted list.
+        */
+
+        List<Container> containers = List.of(
+                new Container("A", List.of(1, 2, 3)),
+                new Container("B", List.of(4, 5, 6)),
+                new Container("C", List.of(7, 8, 9))
+        );
+
+        System.out.println(containers.stream()
+                .flatMap(x -> x.getNumbers().stream())
+                .sorted().collect(Collectors.toList()));
+
+        /*
+         60. Given a list of strings, use reduce() to find the length of the longest word.
+        */
+
+        System.out.println(fruits.stream()
+                .reduce((x, y) -> x.length() > y.length() ? x : y).get());
+
+        /*
+         61. Given a list of Order objects with a LocalDate field, group them by year and count how many orders occurred each year.
+        */
+
+        List<Order> orders = List.of(
+                new Order(LocalDate.of(2023, 2, 22), 5000),
+                new Order(LocalDate.of(2024, 1, 19), 10000),
+                new Order(LocalDate.of(2025, 3, 20), 8000),
+                new Order(LocalDate.of(2025, 2, 10), 4000),
+                new Order(LocalDate.of(2022, 3, 25), 9000),
+                new Order(LocalDate.of(2023, 2, 22), 3000),
+                new Order(LocalDate.of(2025, 3, 20), 15000),
+                new Order(LocalDate.of(2025, 2, 10), 4000)
+        );
+
+        System.out.println(orders.stream()
+                .collect(Collectors.groupingBy(x -> x.getOrderDate().getYear(), Collectors.counting())));
+
     }
 
         /**
@@ -906,6 +968,19 @@ public class StreamPracticeDemo {
         char[] chars = word.toCharArray();
         Arrays.sort(chars);
         return new String(chars);
+    }
+
+    private static boolean isPrime(int n) {
+        if (n <= 1) {
+            return false;
+        }
+        int sqrt = (int)Math.sqrt(n);
+        for (int i = 2; i <= sqrt; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
