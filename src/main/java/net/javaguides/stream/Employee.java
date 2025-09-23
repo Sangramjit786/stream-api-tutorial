@@ -66,6 +66,11 @@ public class Employee {
         this.departmentId = departmentId;
     }
 
+    public Employee(String firstName, Integer salary) {
+        this.firstName = firstName;
+        this.salary = salary;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -9,6 +9,7 @@ public class TerminalOps {
         List<Integer> list = Arrays.asList(1, 2, 3);
 
         // 1. collect
+        System.out.println("Collecting: ");
         list.stream().skip(1).collect(Collectors.toList()); // for old java version
         list.stream().skip(1).toList(); // for new java version
 
@@ -17,11 +18,13 @@ public class TerminalOps {
         * mainly list, set and map can be used*/
 
         // 2. forEach
+        System.out.println("forEach: ");
         list.stream().forEach(x -> System.out.println(x));
 
         list.stream().forEach(System.out::println); // same thing dine using method reference
 
         // 3. reduce : Combines elements to produce a single result
+        System.out.println("reduce: ");
         Optional<Integer> optionalInteger = list.stream().reduce((x, y) -> x + y);
         System.out.println(optionalInteger.get());
 
@@ -29,12 +32,13 @@ public class TerminalOps {
         System.out.println(optionalInteger1.get());
 
         // 4. count
+        System.out.println("count: ");
         long res = list.stream().filter(x -> (x & 1) == 0).count();
         // Here we have used terminal operation 'count()'.
         System.out.println(res);
 
         // 5. anyMatch, allMatch, noneMatch
-
+        System.out.println("anyMatch, allMatch, noneMatch: ");
         boolean b = list.stream().anyMatch(x -> x % 2 == 0);
         System.out.println(b);
 
@@ -45,21 +49,25 @@ public class TerminalOps {
         System.out.println(b2);
 
         // 6. findFirst, findAny
+        System.out.println("findFirst, findAny: ");
         System.out.println(list.stream().findFirst().get());
         System.out.println(list.stream().findAny().get());
 
         // 7. toArray()
+        System.out.println("toArray: ");
         Object[] array = Stream.of(1, 2, 3).toArray();
 
         // 8. min / max
+        System.out.println("min / max: ");
         System.out.println("max: " + Stream.of(2, 44, 69).max(Comparator.naturalOrder()).get());
 
-        System.out.println("max: " + Stream.of(2, 44, 69).max((o1, o2) -> o2 -o1));
+        System.out.println("max: " + Stream.of(2, 44, 69).max((o1, o2) -> o1 -o2).get());
         /*here we are using comparator */
 
         System.out.println("min: " + Stream.of(2, 44, 69).min(Comparator.naturalOrder()).get());
 
         // 9. forEachOrdered
+        System.out.println("forEachOrdered: ");
         List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         System.out.println("Using forEach with parallel stream:");
         numbers.parallelStream().forEach(System.out::println);

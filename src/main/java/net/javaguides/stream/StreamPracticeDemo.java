@@ -956,6 +956,43 @@ public class StreamPracticeDemo {
         System.out.println(orders.stream()
                 .collect(Collectors.groupingBy(x -> x.getOrderDate().getYear(), Collectors.counting())));
 
+        /*
+         62. Find the second highest salary of employees
+        */
+        List<Employee> employeesList = List.of(new Employee("Ram", 60000), new Employee("Shyam", 50000), new Employee("John", 70000), new Employee("Rohit", 80000));
+
+        System.out.println("Second highest Salary: " + employeesList.stream().sorted(Comparator.comparingInt(Employee::getSalary).reversed()).skip(1).findFirst().get().getSalary());
+
+        /*
+         63. Group employees by department and find the highest-paid employee in each department
+        */
+
+        List<Employee> empdetaillist = Arrays.asList(
+                new Employee("Rohit", "IT", 35000),
+                new Employee("Amit", "IT", 90000),
+                new Employee("Rina", "HR", 25000),
+                new Employee("Jay", "Finance", 55000),
+                new Employee("Surojit", "Finance", 50000),
+                new Employee("Puja", "Finance", 52000),
+                new Employee("Papon", "HR", 27000)
+        );
+
+
+        empdetaillist
+                .stream()
+                .collect(Collectors.groupingBy(Employee::getDepartmentName,
+                        Collectors.maxBy(Comparator.comparingInt(Employee::getSalary))))
+                .forEach((dept, opt) ->
+                opt.ifPresent(emp ->
+                        System.out.println("Departmet: " + dept + ", Highest Paid: " + emp.getFirstName())));
+
+        /*
+         64. Find the longest word in a sentence.
+        */
+        sentence = "Java 8 Stream API provides functional-style operations";
+        System.out.println(Arrays.stream(sentence.split(" ")).max(Comparator.comparingInt(String::length)).get());
+
+
     }
 
         /**

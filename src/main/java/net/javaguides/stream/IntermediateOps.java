@@ -10,6 +10,7 @@ public class IntermediateOps {
         // they are lazy, meaning don't execute until a terminal operation is invoked.
 
         // 1. filter
+        System.out.println("Filtering: ");
         List<String> list = Arrays.asList("Akshit", "Ram", "Shyam", "Ghanshyam", "Akshit");
         Stream<String> filteredStream = list.stream().filter(x -> x.startsWith("A"));
         // At this point no filtering happened. Because, we haven't used any terminal operation yet.
@@ -19,6 +20,7 @@ public class IntermediateOps {
         System.out.println(res);
 
         // 2.map
+        System.out.println("Mapping: ");
         Stream<String> stringStream = list.stream().map(x -> x.toUpperCase());
         // At this point nothing happened. Because, we haven't used any terminal operation yet.
 
@@ -26,20 +28,25 @@ public class IntermediateOps {
         // here we have used method reference, since 'toUpperCase()' is method
 
         // 3.sorted
+        System.out.println("Sorting: ");
         Stream<String> sortedStream = list.stream().sorted();
         Stream<String> sortedStreamUsingComparator = list.stream().sorted((a, b) -> a.length() - b.length());
 
         // 4.distinct
+        System.out.println("Distinct: ");
         System.out.println(list.stream().filter(x -> x.startsWith("A")).distinct().count());
 
         // 5.limit
+        System.out.println("Limit: ");
         System.out.println(Stream.iterate(1, x -> x + 1).limit(100).count());
 
         // 6. skip
+        System.out.println("Skip: ");
         System.out.println(Stream.iterate(1, x -> x + 1).skip(10).limit(100).count());
         /* Starting from 11, to 100 elements it will contain. And first 1 to 10 elements will be skiped */
 
         // 7. peek
+        System.out.println("Peek: ");
         Stream.iterate(1, x -> x + 1).skip(10).limit(100).peek(System.out::println).count();
 
         // 8. flatMap
@@ -48,6 +55,7 @@ public class IntermediateOps {
         Flatten nested structures (e.g., lists within lists) so that they can be processed as a single sequence of elements
         Transform and flatten elements at the same time.
          */
+        System.out.println("FlatMap: ");
         List<List<String>> listOfLists = Arrays.asList(
                 Arrays.asList("apple", "banana"),
                 Arrays.asList("orange", "kiwi"),
