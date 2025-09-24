@@ -992,6 +992,45 @@ public class StreamPracticeDemo {
         sentence = "Java 8 Stream API provides functional-style operations";
         System.out.println(Arrays.stream(sentence.split(" ")).max(Comparator.comparingInt(String::length)).get());
 
+        /*
+         65. Flatten and find distinct elements from nested lists. Find all distinct numbers across all lists, in sorted order.
+        */
+        List<List<Integer>> numbersList = Arrays.asList(
+                Arrays.asList(1, 2, 3),
+                Arrays.asList(2, 4, 6),
+                Arrays.asList(3, 6, 9)
+        );
+
+        System.out.println(numbersList.stream().flatMap(List::stream).distinct().sorted().collect(Collectors.toList()));
+
+        /*
+         66. Find top 3 most frequent words in a paragraph
+        */
+        String text = "java stream api in java is powerful java api stream stream";
+        Arrays.stream(text.split(" "))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(3)
+                .forEach((key) ->
+                        System.out.println(key.getKey()));
+
+        /*
+         67. From a list of employees, find the department that has the highest average salary.
+        */
+
+        empdetaillist = Arrays.asList(
+                new Employee("Rohit", "IT", 35000),
+                new Employee("Amit", "IT", 90000),
+                new Employee("Rina", "HR", 25000),
+                new Employee("Jay", "Finance", 55000),
+                new Employee("Surojit", "Finance", 50000),
+                new Employee("Puja", "Finance", 52000),
+                new Employee("Papon", "HR", 27000)
+        );
+
+        System.out.println(empdetaillist.stream().collect(Collectors.groupingBy(Employee::getDepartmentName, Collectors.averagingDouble(Employee::getSalary))).entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey());
 
     }
 
