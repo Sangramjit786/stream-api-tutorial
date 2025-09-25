@@ -15,6 +15,11 @@ public class Employee {
     LocalDate date;
     String designation;
 
+//    public Employee(Integer id, String firstName, String departmentName, Integer salary) {
+//
+//    }
+
+
     public Employee(String firstName, String departmentName, Integer salary) {
         this.firstName = firstName;
         this.departmentName = departmentName;
@@ -70,6 +75,15 @@ public class Employee {
         this.firstName = firstName;
         this.salary = salary;
     }
+
+    public Employee(Integer id, String firstName, Integer salary, String departmentName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.departmentName = departmentName;
+        this.salary = salary;
+    }
+
+
 
     public Integer getId() {
         return id;

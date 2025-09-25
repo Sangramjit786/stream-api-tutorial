@@ -1030,7 +1030,88 @@ public class StreamPracticeDemo {
                 new Employee("Papon", "HR", 27000)
         );
 
-        System.out.println(empdetaillist.stream().collect(Collectors.groupingBy(Employee::getDepartmentName, Collectors.averagingDouble(Employee::getSalary))).entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey());
+        System.out.println(empdetaillist
+                .stream()
+                .collect(Collectors.groupingBy(Employee::getDepartmentName,
+                        Collectors.averagingDouble(Employee::getSalary)))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .get()
+                .getKey());
+
+        /*
+         68. Employee with nth highest salary in each department
+        */
+
+        List<Employee> employeeList1 = Arrays.asList(
+                new Employee(1, "Riya", 35000, "HR"),
+                new Employee(2, "Amit", 55000,"IT"),
+                new Employee(3, "Jay", 60000, "Finance"),
+                new Employee(4, "Rohit", 25000, "HR"),
+                new Employee(5, "Ajay", 52000,"IT"),
+                new Employee(6, "Puja", 55000, "Finance"),
+                new Employee(7, "Taniya", 27000, "HR"),
+                new Employee(8, "Roy", 57000,"IT"),
+                new Employee(9, "Neha", 61000, "Finance")
+        );
+
+        int n = 2;
+
+        employeeList1
+                .stream()
+                .collect(
+                        Collectors.groupingBy(
+                        Employee::getDepartmentName,
+                Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        empList1 -> empList1
+                                .stream()
+                                .sorted(Comparator.comparingInt(Employee::getSalary).reversed())
+                                .skip(n - 1)
+                                .findFirst())))
+                .forEach((dept, prods) -> {
+                    System.out.println("Id: " + prods.get().getId() + ", Department: " + dept +", Employee :" + prods.get().getFirstName());
+                }
+                );
+
+        /*
+         69. Find top 3 longest strings grouped by first character
+        */
+
+        List<String> wordsList = Arrays.asList("apple", "application", "ant", "banana", "ball", "batman", "cat", "caterpillar", "an", "bat");
+
+        wordsList
+                .stream()
+                .collect(Collectors.groupingBy(wrd -> wrd.charAt(0),
+                Collectors.collectingAndThen(Collectors.toList(),
+                        wrdList -> wrdList
+                                .stream()
+                                .sorted(Comparator.comparingInt(String::length).reversed())
+                                .limit(3))))
+                .forEach((ch, wrdlist) -> {
+                    System.out.println("Character: " + ch + ", Words: " + wrdlist.toList());
+                        }
+                );
+
+        /*
+         70. Find common elements across multiple lists
+        */
+
+        List<Integer> list_1 = Arrays.asList(1, 2, 3, 4, 5);
+        List<Integer> list_2 = Arrays.asList(2, 3, 6, 7);
+        List<Integer> list_3 = Arrays.asList(3, 8, 9, 2);
+
+        System.out.println(
+                Stream.of(list_1, list_2, list_3)
+                        .map(HashSet::new)
+                        .reduce((set1, set2) -> {
+                            set1.retainAll(set2);
+                            return set1;
+                        })
+                .orElse(new HashSet<>())
+                .stream()
+                .collect(Collectors.toList()));
 
     }
 
