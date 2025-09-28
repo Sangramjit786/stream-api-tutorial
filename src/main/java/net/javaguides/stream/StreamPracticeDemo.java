@@ -1113,6 +1113,254 @@ public class StreamPracticeDemo {
                 .stream()
                 .collect(Collectors.toList()));
 
+        /*
+         71. Transaction Logs: Find the top 3 customers by transaction amount
+        */
+
+
+        List<Transaction> transAmounts = List.of(
+                new Transaction("C1", 5000),
+                new Transaction("C2", 8000),
+                new Transaction("C1", 4000),
+                new Transaction("C3", 10000),
+                new Transaction("C2", 2000),
+                new Transaction("C4", 9000),
+                new Transaction("C5", 3000),
+                new Transaction("C6", 15000),
+                new Transaction("C7", 4000)
+        );
+
+        System.out.println(transAmounts
+                .stream()
+                .collect(Collectors.groupingBy(
+                        t1 -> t1.getCustomerId(),
+                        Collectors.summingDouble(t2 -> t2.getAmount())))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(3)
+                .collect(Collectors.toList()));
+
+        /*
+         72. Strings: Group words by first letter and pick the longest word in each group
+        */
+
+        List<String> wordList = Arrays.asList("apple", "ant", "application", "banana", "ball", "batman", "cat", "caterpillar");
+
+        System.out.println(wordsList
+                .stream()
+                .collect(
+                        Collectors.groupingBy(x -> x.charAt(0),
+                                Collectors.collectingAndThen(
+                Collectors.toList(),
+                l -> l
+                        .stream()
+                        .max(Comparator.comparingInt(String::length))
+                        .get()
+        ))));
+
+
+        /*
+            73. Nested List Flattening & Aggregation
+        */
+
+        List<List<Integer>> scores = Arrays.asList(
+                Arrays.asList(70, 85, 90),
+                Arrays.asList(60, 88),
+                Arrays.asList(95, 80, 75, 99)
+        );
+
+        System.out.println(scores
+                .stream()
+                .flatMap(x -> x.stream())
+                .max(Comparator.comparingInt(Integer::intValue))
+                .get());
+
+        /*
+         74. Word Frequency Counter (Case-Insensitive)
+        */
+
+        text = "Java is great. Java Stream API is powerful. Stream API is amazing.";
+
+        System.out.println(
+                Arrays.stream(text.replace(".", "").split(" "))
+                        .map(String::toLowerCase)
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                        .entrySet()
+                        .stream()
+                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .collect(Collectors.toList())
+        );
+
+        /*
+         75. Find Common Elements Across Multiple Lists
+        */
+
+        list_1 = Arrays.asList(1, 2, 3, 4, 5);
+        list_2 = Arrays.asList(3, 4, 5, 6, 7);
+        list_3 = Arrays.asList(5, 7, 9, 3);
+
+        System.out.println(
+                Stream.of(list_1, list_2, list_3)
+                        .map(HashSet::new)
+                        .reduce((set1, set2) -> {
+                            set1.retainAll(set2);
+                            return set1;
+                        })
+                        .orElse(new HashSet<>())
+                        .stream()
+                        .collect(Collectors.toList())
+        );
+
+        /*
+         76. Character Frequency from a List of Strings
+        */
+        List<String> wrds = Arrays.asList("apple", "banana", "mango");
+
+        System.out.println(
+                wrds.stream()
+                        .reduce((s1, s2) -> s1 + s2)
+                        .get()
+                        .chars()
+                        .mapToObj(ch -> (char)ch)
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
+
+        /*
+         77. Merge all lists, remove duplicates, and return them in descending order.
+        */
+
+        list_1 = Arrays.asList(10, 20, 30, 40);
+        list_2 = Arrays.asList(30, 40, 50, 60);
+        list_3 = Arrays.asList(20, 60, 70, 80);
+
+        System.out.println(
+                Stream.of(list_1, list_2, list_3)
+                        .flatMap(List::stream)
+                        .distinct()
+                        .sorted(Comparator.reverseOrder())
+                        .collect(Collectors.toList())
+        );
+
+        /*
+         78. Find the top 3 most frequent words (ignore case and punctuation).
+        */
+        text = "Stream API in Java is powerful. Java developers love Stream API.";
+        System.out.println(Arrays.stream(text
+                        .toLowerCase()
+                        .replace(".", "").split(" "))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(3)
+                .collect(Collectors.toList()));
+
+        /*
+         79. Group employees into age bands (<30, 30-40, >40) using Stream groupingBy, and within each band, count how many
+             employees exist.
+        */
+
+        empdetaillist = Arrays.asList(
+                new Employee(28, "IT", "Rohit"),
+                new Employee(25, "IT", "Amit"),
+                new Employee(40, "HR", "Rina"),
+                new Employee(35, "Finance", "Jay"),
+                new Employee(30, "Finance", "Surojit"),
+                new Employee(41, "Finance", "Puja"),
+                new Employee(44, "HR", "Papon")
+        );
+
+        System.out.println(empdetaillist.stream().collect(Collectors.groupingBy(emp -> {
+            if (emp.getAge() < 30){
+                return "Less then 30: ";
+            } else if(emp.getAge() >= 30 && emp.getAge() <= 40) {
+                return "Between 30 and 40: ";
+            } else {
+                return "Greater then 40: ";
+            }
+        }, Collectors.counting())));
+
+        /*
+         80. Most Repeated Element in a List
+        */
+
+        numbers = Arrays.asList(5, 3, 9, 5, 3, 5, 7, 3, 3, 9, 5, 5);
+
+        numbers
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(1)
+                .forEach(e1 -> System.out.println("Most frequent number: " + e1.getKey()));
+
+        /*
+         81. Department-Wise Average Salary of Top 2 Earners.
+        */
+
+        empdetaillist = Arrays.asList(
+                new Employee("Rohit", "IT", 35000),
+                new Employee("Amit", "IT", 90000),
+                new Employee("Rina", "HR", 25000),
+                new Employee("Jay", "Finance", 55000),
+                new Employee("Surojit", "Finance", 50000),
+                new Employee("Puja", "Finance", 52000),
+                new Employee("Papon", "HR", 27000),
+                new Employee("Roy", "IT", 57000),
+                new Employee("Taniya", "HR", 27000)
+        );
+
+
+        // My solution:
+        System.out.println("My solution: ");
+        empdetaillist
+                .stream()
+                .collect(Collectors.groupingBy(emp -> emp.getDepartmentName(),
+                        Collectors.collectingAndThen(Collectors.toList(),
+                                l1 -> l1
+                                        .stream()
+                                .sorted(Comparator.comparingInt(Employee::getSalary).reversed())
+                                .limit(2)
+                                .collect(Collectors.toList()))))
+
+                .forEach((key, value) -> {
+                    System.out.println("Department: " + key + ", Average of Top 2 salary: " + value
+                            .stream()
+                            .mapToDouble(Employee::getSalary)
+                            .average()
+                            .getAsDouble());
+                });
+
+
+        //AI solution:
+        System.out.println("AI solution: ");
+        empdetaillist.stream()
+                .collect(Collectors.groupingBy(
+                        Employee::getDepartmentName,
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                l1 -> l1.stream()
+                                        .sorted(Comparator.comparingInt(Employee::getSalary).reversed())
+                                        .limit(2)
+                                        .collect(Collectors.averagingDouble(Employee::getSalary))
+                        )
+                ))
+                .forEach((dept, avgSalary) ->
+                        System.out.printf("Department: %s, Average of Top 2 salary: %.2f%n", dept, avgSalary)
+                );
+
+
+        /*
+         82. find the longest word in the sentence. If there are multiple with the same length, return any one.
+        */
+
+        sentence = "Java Stream API makes functional-style programming easier";
+
+        System.out.println(Arrays.stream(sentence.split(" ")).max(Comparator.comparingInt(String::length)).get());
+
+
+
     }
 
         /**
