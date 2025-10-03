@@ -30,12 +30,12 @@ public class StreamPracticeDemo {
         employee objects contains salary. So, now you have to find average salary of employees using stream API.
          */
         Employee[] employees = {
-                new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000),
-                new Employee(2, "Ram", "Ghosh", "ram@gamil.com", "Finance", 60000),
-                new Employee(3, "Rina", "Dutta", "rina@outlook.com", "HR", 20000)
+                new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000.0),
+                new Employee(2, "Ram", "Ghosh", "ram@gamil.com", "Finance", 60000.0),
+                new Employee(3, "Rina", "Dutta", "rina@outlook.com", "HR", 20000.0)
         };
 
-        System.out.println(Arrays.stream(employees).collect(Collectors.averagingInt(Employee::getSalary)));
+        System.out.println(Arrays.stream(employees).collect(Collectors.averagingDouble(Employee::getSalary)));
 
         /*
          3. Using stream API merge two unsorted arrays into a single sorted array.
@@ -103,12 +103,12 @@ public class StreamPracticeDemo {
          */
 
         Employee[] employeeList = {
-                new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000),
-                new Employee(2, "Ram", "Ghosh", "ram@gamil.com", "Finance", 60000),
-                new Employee(3, "Rina", "Dutta", "rina@outlook.com", "HR", 20000),
-                new Employee(4, "Amit", "Das", "amit@outlook.com", "Finance", 55000),
-                new Employee(5, "Amrita", "Biswas", "amrita@outlook.com", "HR", 15000),
-                new Employee(6, "Sailayee", "Singh", "sailayee@outlook.com", "HR", 17000)
+                new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000.0),
+                new Employee(2, "Ram", "Ghosh", "ram@gamil.com", "Finance", 60000.0),
+                new Employee(3, "Rina", "Dutta", "rina@outlook.com", "HR", 20000.0),
+                new Employee(4, "Amit", "Das", "amit@outlook.com", "Finance", 55000.0),
+                new Employee(5, "Amrita", "Biswas", "amrita@outlook.com", "HR", 15000.0),
+                new Employee(6, "Sailayee", "Singh", "sailayee@outlook.com", "HR", 17000.0)
         };
 
         System.out.println(Arrays.stream(employeeList).collect(Collectors.groupingBy(Employee::getDepartmentName)));
@@ -159,7 +159,7 @@ public class StreamPracticeDemo {
          13. Given a list of employees with a salary field, find the top 3 highest salaries using Stream API.
         */
         System.out.println(Arrays.stream(employeeList)
-                .sorted(Comparator.comparingInt(Employee::getSalary).reversed())
+                .sorted(Comparator.comparingDouble(Employee::getSalary).reversed())
                 .limit(3)
                 .collect(Collectors.toList()));
 
@@ -186,19 +186,19 @@ public class StreamPracticeDemo {
         */
         List<Department> departments = Arrays.asList(
                 new Department("IT", Arrays.asList(
-                        new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000),
-                        new Employee(3, "Amit", "Das", "amit@gamil.com", "IT", 30000),
-                        new Employee(5, "Riya", "DebNath", "riya@gamil.com", "IT", 32000)
+                        new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000.0),
+                        new Employee(3, "Amit", "Das", "amit@gamil.com", "IT", 30000.0),
+                        new Employee(5, "Riya", "DebNath", "riya@gamil.com", "IT", 32000.0)
                 )),
                 new Department("HR", Arrays.asList(
-                        new Employee(2, "Rina", "Singh", "rina@gamil.com", "HR", 25000),
-                        new Employee(6, "Ajay", "Sardar", "ajay@gamil.com", "HR", 20000),
-                        new Employee(7, "Priya", "DebNath", "priya@gamil.com", "HR", 22000)
+                        new Employee(2, "Rina", "Singh", "rina@gamil.com", "HR", 25000.0),
+                        new Employee(6, "Ajay", "Sardar", "ajay@gamil.com", "HR", 20000.0),
+                        new Employee(7, "Priya", "DebNath", "priya@gamil.com", "HR", 22000.0)
                 )),
                 new Department("Finance", Arrays.asList(
-                        new Employee(4, "Jay", "Das", "jay@gamil.com", "Finance", 55000),
-                        new Employee(8, "Surojit", "Mondal", "surojit@gamil.com", "Finance", 50000),
-                        new Employee(9, "Puja", "Mukherjee", "puja@gamil.com", "Finance", 52000)
+                        new Employee(4, "Jay", "Das", "jay@gamil.com", "Finance", 55000.0),
+                        new Employee(8, "Surojit", "Mondal", "surojit@gamil.com", "Finance", 50000.0),
+                        new Employee(9, "Puja", "Mukherjee", "puja@gamil.com", "Finance", 52000.0)
                 ))
         );
 
@@ -265,12 +265,12 @@ public class StreamPracticeDemo {
          */
 
         List<Employee> empList = Arrays.asList(
-                new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000, 'M'),
-                new Employee(3, "Amit", "Das", "amit@gamil.com", "IT", 30000, 'M'),
-                new Employee(2, "Rina", "Singh", "rina@gamil.com", "HR", 25000,'F'),
-                new Employee(4, "Jay", "Das", "jay@gamil.com", "Finance", 55000,'M'),
-                new Employee(8, "Surojit", "Mondal", "surojit@gamil.com", "Finance", 50000, 'M'),
-                new Employee(9, "Puja", "Mukherjee", "puja@gamil.com", "Finance", 52000, 'F')
+                new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000.0, 'M'),
+                new Employee(3, "Amit", "Das", "amit@gamil.com", "IT", 30000.0, 'M'),
+                new Employee(2, "Rina", "Singh", "rina@gamil.com", "HR", 25000.0,'F'),
+                new Employee(4, "Jay", "Das", "jay@gamil.com", "Finance", 55000.0,'M'),
+                new Employee(8, "Surojit", "Mondal", "surojit@gamil.com", "Finance", 50000.0, 'M'),
+                new Employee(9, "Puja", "Mukherjee", "puja@gamil.com", "Finance", 52000.0, 'F')
         );
 
         System.out.println(empList
@@ -329,12 +329,12 @@ public class StreamPracticeDemo {
         */
 
         List<Employee> empLists = Arrays.asList(
-                new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000, 'M', LocalDate.of(2023, 2, 22)),
-                new Employee(3, "Amit", "Das", "amit@gamil.com", "IT", 30000, 'M', LocalDate.of(2025, 3, 20)),
-                new Employee(2, "Rina", "Singh", "rina@gamil.com", "HR", 25000,'F', LocalDate.of(2025, 2, 10)),
-                new Employee(4, "Jay", "Das", "jay@gamil.com", "Finance", 55000,'M', LocalDate.of(2024, 1, 19)),
-                new Employee(8, "Surojit", "Mondal", "surojit@gamil.com", "Finance", 50000, 'M', LocalDate.of(2023, 4, 22)),
-                new Employee(9, "Puja", "Mukherjee", "puja@gamil.com", "Finance", 52000, 'F', LocalDate.of(2022, 3, 25))
+                new Employee(1, "Rohit", "Nath", "rohit@gamil.com", "IT", 35000.0, 'M', LocalDate.of(2023, 2, 22)),
+                new Employee(3, "Amit", "Das", "amit@gamil.com", "IT", 30000.0, 'M', LocalDate.of(2025, 3, 20)),
+                new Employee(2, "Rina", "Singh", "rina@gamil.com", "HR", 25000.0,'F', LocalDate.of(2025, 2, 10)),
+                new Employee(4, "Jay", "Das", "jay@gamil.com", "Finance", 55000.0,'M', LocalDate.of(2024, 1, 19)),
+                new Employee(8, "Surojit", "Mondal", "surojit@gamil.com", "Finance", 50000.0, 'M', LocalDate.of(2023, 4, 22)),
+                new Employee(9, "Puja", "Mukherjee", "puja@gamil.com", "Finance", 52000.0, 'F', LocalDate.of(2022, 3, 25))
         );
 
         System.out.println(empLists.stream().collect(Collectors.groupingBy(x -> x.getDate().getYear(), Collectors.groupingBy(x -> x.getDepartmentName()))));
@@ -521,18 +521,18 @@ public class StreamPracticeDemo {
         */
 
         List<Employee> employeeLists = Arrays.asList(
-                new Employee(1, "Rohit", "IT", 35000, "C1"),
-                new Employee(3, "Amit", "IT", 30000, "C2"),
-                new Employee(2, "Rina", "HR", 25000,"Y"),
-                new Employee(4, "Jay", "Finance", 55000,"C2"),
-                new Employee(8, "Surojit", "Finance", 50000, "C2"),
-                new Employee(9, "Puja", "Finance", 52000, "C1")
+                new Employee(1, "Rohit", "IT", 35000.0, "C1"),
+                new Employee(3, "Amit", "IT", 30000.0, "C2"),
+                new Employee(2, "Rina", "HR", 25000.0,"Y"),
+                new Employee(4, "Jay", "Finance", 55000.0,"C2"),
+                new Employee(8, "Surojit", "Finance", 50000.0, "C2"),
+                new Employee(9, "Puja", "Finance", 52000.0, "C1")
         );
 
         System.out.println(employeeLists
                 .stream()
                 .collect(Collectors.groupingBy(Employee::getDepartmentName,
-                        Collectors.groupingBy(Employee::getDesignation, Collectors.summingInt(Employee::getSalary)))));
+                        Collectors.groupingBy(Employee::getDesignation, Collectors.summingDouble(Employee::getSalary)))));
 
         System.out.println(employeeLists
                 .stream()
@@ -807,12 +807,12 @@ public class StreamPracticeDemo {
         */
 
         List<Employee> emplist = Arrays.asList(
-                new Employee("Rohit", "IT", 35000),
-                new Employee("Amit", "IT", 90000),
-                new Employee("Rina", "HR", 25000),
-                new Employee("Jay", "Finance", 55000),
-                new Employee("Surojit", "Finance", 50000),
-                new Employee("Puja", "Finance", 52000)
+                new Employee("Rohit", "IT", 35000.0),
+                new Employee("Amit", "IT", 90000.0),
+                new Employee("Rina", "HR", 25000.0),
+                new Employee("Jay", "Finance", 55000.0),
+                new Employee("Surojit", "Finance", 50000.0),
+                new Employee("Puja", "Finance", 52000.0)
         );
 
         System.out.println(emplist.stream().filter(e -> e.getDepartmentName().equals("IT"))
@@ -959,29 +959,29 @@ public class StreamPracticeDemo {
         /*
          62. Find the second highest salary of employees
         */
-        List<Employee> employeesList = List.of(new Employee("Ram", 60000), new Employee("Shyam", 50000), new Employee("John", 70000), new Employee("Rohit", 80000));
+        List<Employee> employeesList = List.of(new Employee("Ram", 60000.0), new Employee("Shyam", 50000.0), new Employee("John", 70000.0), new Employee("Rohit", 80000.0));
 
-        System.out.println("Second highest Salary: " + employeesList.stream().sorted(Comparator.comparingInt(Employee::getSalary).reversed()).skip(1).findFirst().get().getSalary());
+        System.out.println("Second highest Salary: " + employeesList.stream().sorted(Comparator.comparingDouble(Employee::getSalary).reversed()).skip(1).findFirst().get().getSalary());
 
         /*
          63. Group employees by department and find the highest-paid employee in each department
         */
 
         List<Employee> empdetaillist = Arrays.asList(
-                new Employee("Rohit", "IT", 35000),
-                new Employee("Amit", "IT", 90000),
-                new Employee("Rina", "HR", 25000),
-                new Employee("Jay", "Finance", 55000),
-                new Employee("Surojit", "Finance", 50000),
-                new Employee("Puja", "Finance", 52000),
-                new Employee("Papon", "HR", 27000)
+                new Employee("Rohit", "IT", 35000.0),
+                new Employee("Amit", "IT", 90000.0),
+                new Employee("Rina", "HR", 25000.0),
+                new Employee("Jay", "Finance", 55000.0),
+                new Employee("Surojit", "Finance", 50000.0),
+                new Employee("Puja", "Finance", 52000.0),
+                new Employee("Papon", "HR", 27000.0)
         );
 
 
         empdetaillist
                 .stream()
                 .collect(Collectors.groupingBy(Employee::getDepartmentName,
-                        Collectors.maxBy(Comparator.comparingInt(Employee::getSalary))))
+                        Collectors.maxBy(Comparator.comparingDouble(Employee::getSalary))))
                 .forEach((dept, opt) ->
                 opt.ifPresent(emp ->
                         System.out.println("Departmet: " + dept + ", Highest Paid: " + emp.getFirstName())));
@@ -1021,13 +1021,13 @@ public class StreamPracticeDemo {
         */
 
         empdetaillist = Arrays.asList(
-                new Employee("Rohit", "IT", 35000),
-                new Employee("Amit", "IT", 90000),
-                new Employee("Rina", "HR", 25000),
-                new Employee("Jay", "Finance", 55000),
-                new Employee("Surojit", "Finance", 50000),
-                new Employee("Puja", "Finance", 52000),
-                new Employee("Papon", "HR", 27000)
+                new Employee("Rohit", "IT", 35000.0),
+                new Employee("Amit", "IT", 90000.0),
+                new Employee("Rina", "HR", 25000.0),
+                new Employee("Jay", "Finance", 55000.0),
+                new Employee("Surojit", "Finance", 50000.0),
+                new Employee("Puja", "Finance", 52000.0),
+                new Employee("Papon", "HR", 27000.0)
         );
 
         System.out.println(empdetaillist
@@ -1045,15 +1045,15 @@ public class StreamPracticeDemo {
         */
 
         List<Employee> employeeList1 = Arrays.asList(
-                new Employee(1, "Riya", 35000, "HR"),
-                new Employee(2, "Amit", 55000,"IT"),
-                new Employee(3, "Jay", 60000, "Finance"),
-                new Employee(4, "Rohit", 25000, "HR"),
-                new Employee(5, "Ajay", 52000,"IT"),
-                new Employee(6, "Puja", 55000, "Finance"),
-                new Employee(7, "Taniya", 27000, "HR"),
-                new Employee(8, "Roy", 57000,"IT"),
-                new Employee(9, "Neha", 61000, "Finance")
+                new Employee(1, "Riya", 35000.0, "HR"),
+                new Employee(2, "Amit", 55000.0,"IT"),
+                new Employee(3, "Jay", 60000.0, "Finance"),
+                new Employee(4, "Rohit", 25000.0, "HR"),
+                new Employee(5, "Ajay", 52000.0,"IT"),
+                new Employee(6, "Puja", 55000.0, "Finance"),
+                new Employee(7, "Taniya", 27000.0, "HR"),
+                new Employee(8, "Roy", 57000.0,"IT"),
+                new Employee(9, "Neha", 61000.0, "Finance")
         );
 
         int n = 2;
@@ -1067,7 +1067,7 @@ public class StreamPracticeDemo {
                         Collectors.toList(),
                         empList1 -> empList1
                                 .stream()
-                                .sorted(Comparator.comparingInt(Employee::getSalary).reversed())
+                                .sorted(Comparator.comparingDouble(Employee::getSalary).reversed())
                                 .skip(n - 1)
                                 .findFirst())))
                 .forEach((dept, prods) -> {
@@ -1300,15 +1300,15 @@ public class StreamPracticeDemo {
         */
 
         empdetaillist = Arrays.asList(
-                new Employee("Rohit", "IT", 35000),
-                new Employee("Amit", "IT", 90000),
-                new Employee("Rina", "HR", 25000),
-                new Employee("Jay", "Finance", 55000),
-                new Employee("Surojit", "Finance", 50000),
-                new Employee("Puja", "Finance", 52000),
-                new Employee("Papon", "HR", 27000),
-                new Employee("Roy", "IT", 57000),
-                new Employee("Taniya", "HR", 27000)
+                new Employee("Rohit", "IT", 35000.0),
+                new Employee("Amit", "IT", 90000.0),
+                new Employee("Rina", "HR", 25000.0),
+                new Employee("Jay", "Finance", 55000.0),
+                new Employee("Surojit", "Finance", 50000.0),
+                new Employee("Puja", "Finance", 52000.0),
+                new Employee("Papon", "HR", 27000.0),
+                new Employee("Roy", "IT", 57000.0),
+                new Employee("Taniya", "HR", 27000.0)
         );
 
 
@@ -1320,7 +1320,7 @@ public class StreamPracticeDemo {
                         Collectors.collectingAndThen(Collectors.toList(),
                                 l1 -> l1
                                         .stream()
-                                .sorted(Comparator.comparingInt(Employee::getSalary).reversed())
+                                .sorted(Comparator.comparingDouble(Employee::getSalary).reversed())
                                 .limit(2)
                                 .collect(Collectors.toList()))))
 
@@ -1341,7 +1341,7 @@ public class StreamPracticeDemo {
                         Collectors.collectingAndThen(
                                 Collectors.toList(),
                                 l1 -> l1.stream()
-                                        .sorted(Comparator.comparingInt(Employee::getSalary).reversed())
+                                        .sorted(Comparator.comparingDouble(Employee::getSalary).reversed())
                                         .limit(2)
                                         .collect(Collectors.averagingDouble(Employee::getSalary))
                         )
@@ -1357,8 +1357,103 @@ public class StreamPracticeDemo {
 
         sentence = "Java Stream API makes functional-style programming easier";
 
-        System.out.println(Arrays.stream(sentence.split(" ")).max(Comparator.comparingInt(String::length)).get());
+        System.out.println(Arrays.stream(sentence.split(" "))
+                .max(Comparator.comparingInt(String::length))
+                .get());
 
+        /*
+         83. Find First Non-Repeating Character in a String
+        */
+        str = "swiss";
+
+        str.chars()
+                .mapToObj(c -> (char)c)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream()
+                .filter(entry -> entry.getValue() == 1)
+                .findFirst()
+                .ifPresent(entry -> System.out.println("First unique character: " + entry.getKey()));
+
+        /*
+         84. Find the top 3 most frequent words and their counts, sorted by frequency (descending).
+        */
+
+        List<String> words_list = Arrays.asList(
+                "apple", "banana", "apple", "orange", "banana",
+                "apple", "mango", "banana", "grapes", "apple",
+                "orange", "mango", "banana"
+        );
+
+        words_list.stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(3)
+                .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue()));
+
+
+        /*
+         85. Increase the salary by 10% for employees in "IT" department earning less than 50,000 and return a new List of
+             updated Employees, keeping others unchanged.
+        */
+
+        empdetaillist = Arrays.asList(
+                new Employee(1, "John", 45000.0, "IT"),
+                new Employee(2, "Alice", 55000.0, "HR"),
+                new Employee(3, "Bob", 60000.0, "IT"),
+                new Employee(4, "David", 40000.0, "Finance"),
+                new Employee(5, "Sophia", 30000.0, "IT")
+        );
+
+        empdetaillist.stream()
+                .map(e -> {
+                    if (e.getDepartmentName().equals("IT") && e.getSalary() < 50000.0) {
+                        return new Employee(e.getId(), e.getFirstName(), e.getSalary() * 1.1, e.getDepartmentName());
+                    }
+                    return e;
+                }).forEach(e -> {
+                    System.out.println("Emp Id: " + e.getId() + ", Name: " + e.getFirstName() + ", Salary: " + e.getSalary() + ", Department: " + e.getDepartmentName());
+                });
+
+        /*
+         86. Using streams, find the total successful transaction amount per user,
+             but only for users who have made at least 3 successful transactions.
+        */
+
+        List<Transaction> transactionsList = Arrays.asList(
+                new Transaction(101, 1, 200.0, "SUCCESS"),
+                new Transaction(102, 1, 150.0, "FAILED"),
+                new Transaction(103, 1, 300.0, "SUCCESS"),
+                new Transaction(104, 1, 400.0, "SUCCESS"),
+                new Transaction(105, 2, 500.0, "SUCCESS"),
+                new Transaction(106, 2, 600.0, "FAILED"),
+                new Transaction(107, 2, 700.0, "SUCCESS"),
+                new Transaction(108, 3, 800.0, "SUCCESS"),
+                new Transaction(109, 3, 900.0, "SUCCESS"),
+                new Transaction(110, 3, 1000.0, "SUCCESS"),
+                new Transaction(111, 3, 1200.0, "FAILED")
+        );
+
+        System.out.println(transactionsList.stream()
+                .filter(txn -> "SUCCESS".equals(txn.getStatus()))
+                .collect(Collectors.groupingBy(
+                        txn -> txn.getUserId(),
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                l1 -> {
+                                    if (l1.size() >= 3) {
+                                        return l1.stream()
+                                                .mapToDouble(t -> t.getUserId())
+                                                .sum();
+                                    } else {
+                                        return null; // will remove later
+                                    }
+                                }
+                        )
+                ))
+                .entrySet().stream()
+                .filter(e -> e.getValue() != null)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
 
     }

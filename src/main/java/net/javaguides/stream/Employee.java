@@ -9,7 +9,7 @@ public class Employee {
     String lastName;
     String email;
     String departmentName;
-    Integer salary;
+    Double salary;
     char gender;
     Integer departmentId;
     LocalDate date;
@@ -23,13 +23,13 @@ public class Employee {
         this.firstName = firstName;
     }
 
-    public Employee(String firstName, String departmentName, Integer salary) {
+    public Employee(String firstName, String departmentName, Double salary) {
         this.firstName = firstName;
         this.departmentName = departmentName;
         this.salary = salary;
     }
 
-    public Employee(Integer id, String firstName, String departmentName, Integer salary, String designation) {
+    public Employee(Integer id, String firstName, String departmentName, Double salary, String designation) {
         this.id = id;
         this.firstName = firstName;
         this.departmentName = departmentName;
@@ -37,7 +37,7 @@ public class Employee {
         this.designation = designation;
     }
 
-    public Employee(Integer id, String firstName, String lastName, String email, String departmentName, Integer salary, char gender, LocalDate date) {
+    public Employee(Integer id, String firstName, String lastName, String email, String departmentName, Double salary, char gender, LocalDate date) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,7 +48,7 @@ public class Employee {
         this.date = date;
     }
 
-    public Employee(Integer id, String firstName, String lastName, String email, String departmentName, Integer salary, char gender) {
+    public Employee(Integer id, String firstName, String lastName, String email, String departmentName, Double salary, char gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -58,7 +58,7 @@ public class Employee {
         this.gender = gender;
     }
 
-    public Employee(Integer id, String firstName, String lastName, String email, String departmentName, Integer salary) {
+    public Employee(Integer id, String firstName, String lastName, String email, String departmentName, Double salary) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -74,12 +74,12 @@ public class Employee {
         this.departmentId = departmentId;
     }
 
-    public Employee(String firstName, Integer salary) {
+    public Employee(String firstName, Double salary) {
         this.firstName = firstName;
         this.salary = salary;
     }
 
-    public Employee(Integer id, String firstName, Integer salary, String departmentName) {
+    public Employee(Integer id, String firstName, Double salary, String departmentName) {
         this.id = id;
         this.firstName = firstName;
         this.departmentName = departmentName;
@@ -135,11 +135,11 @@ public class Employee {
         this.departmentName = departmentName;
     }
 
-    public Integer getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(Integer salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 

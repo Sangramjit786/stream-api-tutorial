@@ -8,6 +8,9 @@ public class Transaction {
     private double amount;
     private double weight;
     private LocalDate date;
+    private String status;
+    private Integer id;
+    private Integer userId;
 
     public Transaction(double amount, LocalDate date) {
         this.amount = amount;
@@ -25,12 +28,43 @@ public class Transaction {
         this.weight = weight;
     }
 
+    public Transaction(Integer id, Integer userId, double amount, String status) {
+        this.id = id;
+        this.userId = userId;
+        this.amount = amount;
+        this.status = status;
+    }
+
     public LocalDate getDate() {
         return date;
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getCustomerId() {
