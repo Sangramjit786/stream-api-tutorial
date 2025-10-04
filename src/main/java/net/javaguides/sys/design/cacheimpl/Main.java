@@ -1,4 +1,4 @@
-package net.javaguides.sys.design;
+package net.javaguides.sys.design.cacheimpl;
 
 public class Main {
     public static void main(String[] args) {

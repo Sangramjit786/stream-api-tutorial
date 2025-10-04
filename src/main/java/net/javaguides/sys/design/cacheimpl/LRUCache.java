@@ -1,4 +1,4 @@
-package net.javaguides.sys.design;
+package net.javaguides.sys.design.cacheimpl;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
