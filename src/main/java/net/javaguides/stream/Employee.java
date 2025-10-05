@@ -15,7 +15,13 @@ public class Employee {
     LocalDate date;
     String designation;
     Integer age;
+    String city;
 
+    public Employee(String departmentName, Double salary, String city) {
+        this.departmentName = departmentName;
+        this.salary = salary;
+        this.city = city;
+    }
 
     public Employee(Integer age, String departmentName, String firstName) {
         this.age = age;
@@ -86,6 +92,13 @@ public class Employee {
         this.salary = salary;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public Integer getAge() {
         return age;

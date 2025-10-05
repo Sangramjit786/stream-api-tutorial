@@ -1456,6 +1456,66 @@ public class StreamPracticeDemo {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
 
+        /*
+         87. Find the average salary per department in each city.
+        */
+
+        empdetaillist = Arrays.asList(
+                new Employee("IT", 45000.0, "Pune"),
+                new Employee("HR", 55000.0, "Bangalore"),
+                new Employee("IT", 60000.0, "Pune"),
+                new Employee("Finance", 40000.0, "Pune"),
+                new Employee("IT", 30000.0, "Pune")
+        );
+
+        empdetaillist.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartmentName,
+                Collectors.groupingBy(Employee::getCity,
+                        Collectors.averagingDouble(Employee::getSalary))))
+                .forEach((key, value) ->
+                        System.out.println("Department: " + key + ", Average Slary Per City: " + value));
+
+        /*
+         88. Given a list of integers, find the product of all even numbers that are greater than 5.
+        */
+
+        numbers = Arrays.asList(2, 3, 6, 8, 10, 11, 12);
+
+        System.out.println(
+                numbers.stream()
+                        .filter(x -> x > 5 && (x & 1) == 0)
+                        .reduce(1, (a ,b) -> a * b)
+                        .intValue()
+        );
+
+        /*
+         89. Find the highest-paid employee in each department and return a
+             Map<String, Employee> where key = department name, and value = Employee with the highest salary.
+        */
+
+        empdetaillist = Arrays.asList(
+                new Employee("Rohit", "IT", 35000.0),
+                new Employee("Amit", "IT", 90000.0),
+                new Employee("Rina", "HR", 25000.0),
+                new Employee("Jay", "Finance", 55000.0),
+                new Employee("Surojit", "Finance", 50000.0),
+                new Employee("Puja", "Finance", 52000.0),
+                new Employee("Papon", "HR", 27000.0),
+                new Employee("Roy", "IT", 57000.0),
+                new Employee("Taniya", "HR", 27000.0)
+        );
+
+        empdetaillist.stream()
+                .collect(Collectors.groupingBy(e -> e.getDepartmentName(),
+                Collectors.collectingAndThen(Collectors.toList(),
+                        l1 -> l1.stream()
+                                .max(Comparator.comparingDouble(Employee::getSalary))
+                                .get())))
+                .forEach((key, value) ->
+                System.out.println("Department: " + key + ", Highest Paid Employee: " + value.getFirstName() + "(" + value.getSalary() + ")"));
+
+
+
     }
 
         /**
