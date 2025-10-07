@@ -1514,6 +1514,49 @@ public class StreamPracticeDemo {
                 .forEach((key, value) ->
                 System.out.println("Department: " + key + ", Highest Paid Employee: " + value.getFirstName() + "(" + value.getSalary() + ")"));
 
+        /*
+         90. Find the Longest Word in a Sentence Ignoring Case
+        */
+
+        sentence = "Java Stream API makes functional programming powerful and concise";
+
+        System.out.println(Arrays.stream(sentence.split(" ")).max(Comparator.comparingInt(String::length)).get());
+
+        /*
+        91. Combine Multiple Lists and Find Distinct Sorted Elements
+        */
+        list_1 = Arrays.asList(3, 5, 7, 9);
+        list_2 = Arrays.asList(2, 3, 5, 10);
+        list_3 = Arrays.asList(1, 2, 3, 4);
+
+        System.out.println(Stream.of(list_1, list_2, list_3)
+                .flatMap(List::stream)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList()));
+
+        /*
+         92. Department with Highest Average Salary
+        */
+        empdetaillist = Arrays.asList(
+                new Employee("Rohit", "IT", 35000.0),
+                new Employee("Amit", "IT", 90000.0),
+                new Employee("Rina", "HR", 25000.0),
+                new Employee("Jay", "Finance", 55000.0),
+                new Employee("Surojit", "Finance", 50000.0),
+                new Employee("Puja", "Finance", 52000.0),
+                new Employee("Papon", "HR", 27000.0),
+                new Employee("Roy", "IT", 57000.0),
+                new Employee("Taniya", "HR", 27000.0)
+        );
+
+        System.out.println(
+                empdetaillist
+                        .stream()
+                .collect(
+                        Collectors.groupingBy(
+                                Employee::getDepartmentName,
+                                Collectors.averagingDouble(Employee::getSalary))));
 
 
     }
