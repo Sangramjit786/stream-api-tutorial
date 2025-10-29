@@ -1558,6 +1558,54 @@ public class StreamPracticeDemo {
                                 Employee::getDepartmentName,
                                 Collectors.averagingDouble(Employee::getSalary))));
 
+        /*
+         93. sort hashmap by keys and values.
+        */
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("Banana", 3);
+        map.put("Apple", 5);
+        map.put("Mango", 1);
+        map.put("Orange", 4);
+
+        // Sort by values (ascending)
+        Map<String, Integer> sortedMap = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue()) // sort by value
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1, // merge function
+                        LinkedHashMap::new)); // maintain order
+
+        System.out.println("Sorted by Value: " + sortedMap);
+
+        // Sort by values (descending)
+        /*Map<String, Integer> sortedMapDesc = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())) // sort by value in descending order
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1, // merge function
+                        LinkedHashMap::new)); // maintain order
+
+        System.out.println("Sorted by Value (Descending): " + sortedMapDesc);*/
+
+        // Sort by Key
+        /*
+        Map<String, Integer> sortedByKey = map.entrySet()
+        .stream()
+        .sorted(Map.Entry.comparingByKey())
+        .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (e1, e2) -> e1,
+                LinkedHashMap::new));
+
+         System.out.println("Sorted by Key: " + sortedByKey);
+         */
+
 
     }
 
