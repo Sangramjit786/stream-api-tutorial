@@ -395,6 +395,8 @@ public class StreamPracticeDemo {
 
         weightedAvgByCategory.forEach((category, avg) ->
                 System.out.println("Category: " + category + ", Weighted Average: " + avg));
+        String words = "Java C C++ Python Java C++ Java Python";
+
 
         /*
          24. remove all vowels from a given string
@@ -426,8 +428,6 @@ public class StreamPracticeDemo {
         /*
          27. Count of frequency of words in a String
         */
-
-        String words = "Java C C++ Python Java C++ Java Python";
 
         System.out.println(Arrays.stream(words.split(" ")).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())));
 
@@ -1605,6 +1605,26 @@ public class StreamPracticeDemo {
 
          System.out.println("Sorted by Key: " + sortedByKey);
          */
+
+        /*
+         94. Display the frequency of each word (ignore case) in the form of a map, in the following sentence, using Java 8 streams.
+         And a sentence can have a special character, but does not contain any digits and semicolone.
+        */
+
+        String sentence1 =
+                "Hello, hello! Java? JAVA. Streams; streams: streams";
+
+        Map<String, Long> frequencyMap =
+                Stream.of(sentence1
+                                .toLowerCase()
+                                .replaceAll("[^a-zA-Z ]", "")
+                                .split("\\s+"))
+                        .collect(Collectors.groupingBy(
+                                Function.identity(),
+                                Collectors.counting()
+                        ));
+
+        System.out.println("Frequency map:" +frequencyMap);
 
 
     }
